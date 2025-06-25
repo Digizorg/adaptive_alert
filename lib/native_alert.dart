@@ -32,9 +32,26 @@ class NativeAlertAction {
   final void Function()? onPressed;
 }
 
-/// Shows a customizable dialog that adapts to the current platform. Both iOS
-/// and Android versions are available.
-Future<void> showNativeAlertDialog(
+/// Displays a native alert dialog.
+///
+/// On iOS, this function uses a native `UIAlertController` with the `.alert` style,
+/// providing a familiar and seamless user experience. On other platforms (like
+/// Android), it falls back to Flutter's standard `AlertDialog`.
+///
+/// The dialog includes a [title], a [message], and up to two actions:
+/// [primaryAction] and an optional [secondaryAction]. The appearance and behavior
+/// of these actions are determined by their `NativeAlertActionType`.
+///
+/// - [context]: The `BuildContext` from which to present the dialog.
+/// - [primaryAction]: The main action button for the dialog.
+/// - [secondaryAction]: An optional secondary action button.
+/// - [title]: The title of the dialog.
+/// - [message]: The main content of the dialog.
+/// - [useRootNavigator]: Whether to use the root navigator for presenting the
+/// dialog. Not used on native iOS.
+/// - [dismissible]: Whether the dialog can be dismissed by tapping outside of
+/// it. Not used on native iOS.
+void showNativeAlertDialog(
   BuildContext context, {
   required NativeAlertAction primaryAction,
   NativeAlertAction? secondaryAction,
@@ -138,11 +155,22 @@ Future<void> showNativeAlertDialog(
   );
 }
 
-/// Shows a dialog adequate for a single operation that adapts to the current
-/// platform. Both iOS and Android versions are available. On iOS, this is
-/// rendered as an action sheet, while on Android, it is rendered as a regular
-/// dialog. This is useful when the user has to confirm delete operations.
-Future<void> showNativeConfirmDialog(
+/// Displays a confirmation dialog that is ideal for critical actions like
+/// deletions or other irreversible operations.
+///
+/// This function is designed to provide a consistent yet platform-idiomatic way
+/// to ask for user confirmation. On iOS, it presents a native action sheet,
+/// which is the standard for such interactions. On other platforms, it uses a
+/// standard alert dialog.
+///
+/// - [context]: The `BuildContext` from which to present the dialog.
+/// - [confirmAction]: The action that confirms the operation, typically destructive.
+/// - [cancelAction]: The action that cancels the operation.
+/// - [title]: The title of the dialog.
+/// - [message]: The descriptive message explaining the action.
+/// - [useRootNavigator]: Whether to use the root navigator for presenting the
+/// dialog. Not used on native iOS.
+void showNativeConfirmDialog(
   BuildContext context, {
   required NativeAlertAction confirmAction,
   required NativeAlertAction cancelAction,
@@ -176,7 +204,26 @@ Future<void> showNativeConfirmDialog(
   );
 }
 
-Future<void> showNativeActionSheet(
+/// Shows a native-looking action sheet.
+///
+/// On iOS, this function displays a native `UIAlertController` with the
+/// `.actionSheet` style, which is the standard for presenting a set of choices
+/// related to a user's current context. On other platforms, it gracefully falls
+/// back to a `ModalBottomSheet`, providing a similar user experience.
+///
+/// The action sheet consists of a list of [actions] and a separate [cancelAction].
+/// The cancel action is visually distinct and handled separately on iOS to match
+/// the platform's design guidelines.
+///
+/// - [context]: The `BuildContext` from which to present the action sheet.
+/// - [actions]: A list of `NativeAlertAction`s to display as choices.
+/// - [cancelAction]: The action that dismisses the action sheet without performing
+///   any operation. Must be of type `NativeAlertActionType.cancel`.
+/// - [title]: An optional title for the action sheet.
+/// - [message]: An optional message displayed below the title.
+/// - [useRootNavigator]: Whether to use the root navigator for presenting the
+/// action sheet. Not used on native iOS.
+void showNativeActionSheet(
   BuildContext context, {
   required List<NativeAlertAction> actions,
   required NativeAlertAction cancelAction,
@@ -186,6 +233,9 @@ Future<void> showNativeActionSheet(
 }) async {
   // Check if actions list is empty
   assert(actions.isNotEmpty, 'actions list must not be empty');
+
+  // Check if cancelAction is of type cancel
+  assert(cancelAction.type.isCancel, 'cancelAction must be of type cancel');
 
   // Check if there is at most one NativeAlertAction with type cancel
   final cancelActions = [
@@ -221,8 +271,7 @@ Future<void> showNativeActionSheet(
               Navigator.of(context).pop();
               cancelAction.onPressed?.call();
             },
-            isDefaultAction: cancelAction.type.isCancel,
-            isDestructiveAction: cancelAction.type.isDestructive,
+            isDefaultAction: true,
             child: Text(cancelAction.title),
           ),
         ),
