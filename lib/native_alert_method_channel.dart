@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-
-import 'native_alert_platform_interface.dart';
+import 'package:native_alert/native_alert_platform_interface.dart';
 
 /// An implementation of [NativeAlertPlatform] that uses method channels.
 class MethodChannelNativeAlert extends NativeAlertPlatform {
@@ -9,7 +8,7 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('app.digizorg.native_alert');
 
-    @override
+  @override
   Future<String?> showNativeAlertDialog({
     required String title,
     required String message,
@@ -34,10 +33,10 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
 
   @override
   Future<String?> showNativeActionSheet({
-    String? title,
-    String? message,
     required List<Map<String, String?>> actions,
     required Map<String, String?> cancelAction,
+    String? title,
+    String? message,
   }) async {
     final result = await methodChannel.invokeMethod<String>(
       'showNativeActionSheet',

@@ -15,9 +15,9 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-        log.add(methodCall);
-        return ''; // Return a mock value
-      });
+            log.add(methodCall);
+            return ''; // Return a mock value
+          });
       log.clear();
     });
 
@@ -32,14 +32,17 @@ void main() {
       );
 
       expect(log, <Matcher>[
-        isMethodCall('showNativeAlertDialog', arguments: {
-          'title': 'Test Title',
-          'message': 'Test Message',
-          'primaryButtonTitle': 'OK',
-          'primaryButtonActionType': 'normal',
-          'secondaryButtonTitle': 'Cancel',
-          'secondaryButtonActionType': 'cancel',
-        }),
+        isMethodCall(
+          'showNativeAlertDialog',
+          arguments: {
+            'title': 'Test Title',
+            'message': 'Test Message',
+            'primaryButtonTitle': 'OK',
+            'primaryButtonActionType': 'normal',
+            'secondaryButtonTitle': 'Cancel',
+            'secondaryButtonActionType': 'cancel',
+          },
+        ),
       ]);
     });
 
@@ -55,145 +58,180 @@ void main() {
       );
 
       expect(log, <Matcher>[
-        isMethodCall('showNativeActionSheet', arguments: {
-          'title': 'Action Sheet',
-          'message': 'Select an option',
-          'actions': [
-            {'title': 'Option 1', 'type': 'normal'},
-            {'title': 'Option 2', 'type': 'destructive'},
-          ],
-          'cancelAction': {'title': 'Cancel', 'type': 'cancel'},
-        }),
+        isMethodCall(
+          'showNativeActionSheet',
+          arguments: {
+            'title': 'Action Sheet',
+            'message': 'Select an option',
+            'actions': [
+              {'title': 'Option 1', 'type': 'normal'},
+              {'title': 'Option 2', 'type': 'destructive'},
+            ],
+            'cancelAction': {'title': 'Cancel', 'type': 'cancel'},
+          },
+        ),
       ]);
     });
 
-    test('showNativeAlertDialog with only primary action sends correct arguments', () async {
-      await NativeAlertPlatform.instance.showNativeAlertDialog(
-        title: 'Test Title',
-        message: 'Test Message',
-        primaryButtonTitle: 'OK',
-        primaryButtonActionType: 'normal',
-        secondaryButtonTitle: null,
-        secondaryButtonActionType: null,
-      );
+    test(
+      'showNativeAlertDialog with only primary action sends correct arguments',
+      () async {
+        await NativeAlertPlatform.instance.showNativeAlertDialog(
+          title: 'Test Title',
+          message: 'Test Message',
+          primaryButtonTitle: 'OK',
+          primaryButtonActionType: 'normal',
+        );
 
-      expect(log, <Matcher>[
-        isMethodCall('showNativeAlertDialog', arguments: {
-          'title': 'Test Title',
-          'message': 'Test Message',
-          'primaryButtonTitle': 'OK',
-          'primaryButtonActionType': 'normal',
-          'secondaryButtonTitle': null,
-          'secondaryButtonActionType': null,
-        }),
-      ]);
-    });
+        expect(log, <Matcher>[
+          isMethodCall(
+            'showNativeAlertDialog',
+            arguments: {
+              'title': 'Test Title',
+              'message': 'Test Message',
+              'primaryButtonTitle': 'OK',
+              'primaryButtonActionType': 'normal',
+              'secondaryButtonTitle': null,
+              'secondaryButtonActionType': null,
+            },
+          ),
+        ]);
+      },
+    );
 
-    test('showNativeActionSheet with no title/message sends correct arguments', () async {
-      await NativeAlertPlatform.instance.showNativeActionSheet(
-        title: null,
-        message: null,
-        actions: [
-          {'title': 'Option 1', 'type': 'normal'},
-        ],
-        cancelAction: {'title': 'Cancel', 'type': 'cancel'},
-      );
-
-      expect(log, <Matcher>[
-        isMethodCall('showNativeActionSheet', arguments: {
-          'title': null,
-          'message': null,
-          'actions': [
+    test(
+      'showNativeActionSheet with no title/message sends correct arguments',
+      () async {
+        await NativeAlertPlatform.instance.showNativeActionSheet(
+          actions: [
             {'title': 'Option 1', 'type': 'normal'},
           ],
-          'cancelAction': {'title': 'Cancel', 'type': 'cancel'},
-        }),
-      ]);
-    });
+          cancelAction: {'title': 'Cancel', 'type': 'cancel'},
+        );
+
+        expect(log, <Matcher>[
+          isMethodCall(
+            'showNativeActionSheet',
+            arguments: {
+              'title': null,
+              'message': null,
+              'actions': [
+                {'title': 'Option 1', 'type': 'normal'},
+              ],
+              'cancelAction': {'title': 'Cancel', 'type': 'cancel'},
+            },
+          ),
+        ]);
+      },
+    );
   });
 
   group('NativeAlert Assertions', () {
-    testWidgets('showNativeActionSheet throws assertion for empty actions', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Builder(
-          builder: (context) {
-            expect(
-              () => showNativeActionSheet(
-                context,
-                actions: [],
-                cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
-              ),
-              throwsAssertionError,
-            );
-            return Container();
-          },
+    testWidgets('showNativeActionSheet throws assertion for empty actions', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              expect(
+                () => showNativeActionSheet(
+                  context,
+                  actions: [],
+                  cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+                ),
+                throwsAssertionError,
+              );
+              return Container();
+            },
+          ),
         ),
-      ));
+      );
     });
 
-    testWidgets('showNativeActionSheet throws assertion for wrong cancel type', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Builder(
-          builder: (context) {
-            expect(
-              () => showNativeActionSheet(
-                context,
-                actions: [const NativeAlertAction(title: 'OK')],
-                cancelAction: const NativeAlertAction(title: 'Cancel'), // Not type cancel
-              ),
-              throwsAssertionError,
-            );
-            return Container();
-          },
-        ),
-      ));
-    });
+    testWidgets(
+      'showNativeActionSheet throws assertion for wrong cancel type',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                expect(
+                  () => showNativeActionSheet(
+                    context,
+                    actions: [const NativeAlertAction(title: 'OK')],
+                    cancelAction: const NativeAlertAction(
+                      title: 'Cancel',
+                    ), // Not type cancel
+                  ),
+                  throwsAssertionError,
+                );
+                return Container();
+              },
+            ),
+          ),
+        );
+      },
+    );
 
-    testWidgets('showNativeActionSheet throws assertion for multiple cancel actions', (tester) async {
-      await tester.pumpWidget(MaterialApp(
-        home: Builder(
-          builder: (context) {
-            expect(
-              () => showNativeActionSheet(
-                context,
-                actions: [const NativeAlertAction.cancel(title: 'Cancel 1')],
-                cancelAction: const NativeAlertAction.cancel(title: 'Cancel 2'),
-              ),
-              throwsAssertionError,
-            );
-            return Container();
-          },
-        ),
-      ));
-    });
+    testWidgets(
+      'showNativeActionSheet throws assertion for multiple cancel actions',
+      (tester) async {
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) {
+                expect(
+                  () => showNativeActionSheet(
+                    context,
+                    actions: [
+                      const NativeAlertAction.cancel(title: 'Cancel 1'),
+                    ],
+                    cancelAction: const NativeAlertAction.cancel(
+                      title: 'Cancel 2',
+                    ),
+                  ),
+                  throwsAssertionError,
+                );
+                return Container();
+              },
+            ),
+          ),
+        );
+      },
+    );
   });
 
   group('Fallback UI Tests', () {
-    testWidgets('showNativeAlertDialog shows Material dialog on Android', (tester) async {
+    testWidgets('showNativeAlertDialog shows Material dialog on Android', (
+      tester,
+    ) async {
       final originalPlatform = debugDefaultTargetPlatformOverride;
       try {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         var primaryPressed = false;
 
-        await tester.pumpWidget(MaterialApp(
-          home: Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () => showNativeAlertDialog(
-                context,
-                title: 'Android Alert',
-                message: 'This is a Material dialog.',
-                primaryAction: NativeAlertAction(
-                  title: 'OK',
-                  onPressed: () => primaryPressed = true,
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () => showNativeAlertDialog(
+                  context,
+                  title: 'Android Alert',
+                  message: 'This is a Material dialog.',
+                  primaryAction: NativeAlertAction(
+                    title: 'OK',
+                    onPressed: () => primaryPressed = true,
+                  ),
+                  secondaryAction: const NativeAlertAction(
+                    title: 'Cancel',
+                  ),
                 ),
-                secondaryAction: const NativeAlertAction(
-                  title: 'Cancel',
-                ),
+                child: const Text('Show Alert'),
               ),
-              child: const Text('Show Alert'),
             ),
           ),
-        ));
+        );
 
         await tester.tap(find.byType(ElevatedButton));
         await tester.pumpAndSettle();
@@ -211,30 +249,34 @@ void main() {
       }
     });
 
-    testWidgets('showNativeActionSheet shows BottomSheet on Android', (tester) async {
+    testWidgets('showNativeActionSheet shows BottomSheet on Android', (
+      tester,
+    ) async {
       final originalPlatform = debugDefaultTargetPlatformOverride;
       try {
         debugDefaultTargetPlatformOverride = TargetPlatform.android;
         var action1Pressed = false;
 
-        await tester.pumpWidget(MaterialApp(
-          home: Builder(
-            builder: (context) => ElevatedButton(
-              onPressed: () => showNativeActionSheet(
-                context,
-                title: 'Android Sheet',
-                actions: [
-                  NativeAlertAction(
-                    title: 'Action 1',
-                    onPressed: () => action1Pressed = true,
-                  ),
-                ],
-                cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () => showNativeActionSheet(
+                  context,
+                  title: 'Android Sheet',
+                  actions: [
+                    NativeAlertAction(
+                      title: 'Action 1',
+                      onPressed: () => action1Pressed = true,
+                    ),
+                  ],
+                  cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+                ),
+                child: const Text('Show Sheet'),
               ),
-              child: const Text('Show Sheet'),
             ),
           ),
-        ));
+        );
 
         await tester.tap(find.byType(ElevatedButton));
         await tester.pumpAndSettle();

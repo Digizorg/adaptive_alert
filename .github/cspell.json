@@ -15,7 +15,5 @@
     }
   ],
   "useGitignore": true,
-  "words": [
-    "my_flutter_package"
-  ]
+  "words": ["native_alert", "Cupertino"]
 }

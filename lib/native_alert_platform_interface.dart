@@ -1,6 +1,5 @@
+import 'package:native_alert/native_alert_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-import 'native_alert_method_channel.dart';
 
 abstract class NativeAlertPlatform extends PlatformInterface {
   /// Constructs a NativeAlertPlatform.
@@ -23,7 +22,7 @@ abstract class NativeAlertPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-    Future<String?> showNativeAlertDialog({
+  Future<String?> showNativeAlertDialog({
     required String title,
     required String message,
     required String primaryButtonTitle,
@@ -31,15 +30,19 @@ abstract class NativeAlertPlatform extends PlatformInterface {
     String? secondaryButtonTitle,
     String? secondaryButtonActionType,
   }) {
-    throw UnimplementedError('showNativeAlertDialog() has not been implemented.');
+    throw UnimplementedError(
+      'showNativeAlertDialog() has not been implemented.',
+    );
   }
 
   Future<String?> showNativeActionSheet({
-    String? title,
-    String? message,
     required List<Map<String, String?>> actions,
     required Map<String, String?> cancelAction,
+    String? title,
+    String? message,
   }) {
-    throw UnimplementedError('showNativeActionSheet() has not been implemented.');
+    throw UnimplementedError(
+      'showNativeActionSheet() has not been implemented.',
+    );
   }
 }
