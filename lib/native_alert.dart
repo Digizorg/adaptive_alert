@@ -4,31 +4,51 @@ import 'package:flutter/material.dart';
 import 'package:native_alert/iterable_extensions.dart';
 import 'package:native_alert/native_alert_platform_interface.dart';
 
+/// The type of an action in a native alert dialog.
 enum NativeAlertActionType {
+  /// A normal action.
   normal,
+
+  /// A destructive action.
   destructive,
+
+  /// A cancel action.
   cancel;
 
+  /// Returns true if this action is a normal action.
   bool get isNormal => this == NativeAlertActionType.normal;
+
+  /// Returns true if this action is a destructive action.
   bool get isDestructive => this == NativeAlertActionType.destructive;
+
+  /// Returns true if this action is a cancel action.
   bool get isCancel => this == NativeAlertActionType.cancel;
 }
 
+/// An action in a native alert dialog.
 class NativeAlertAction {
+  /// Creates a new [NativeAlertAction].
   const NativeAlertAction({
     required this.title,
     this.type = NativeAlertActionType.normal,
     this.onPressed,
   });
 
+  /// Creates a new [NativeAlertAction] with a destructive type.
   const NativeAlertAction.destructive({required this.title, this.onPressed})
     : type = NativeAlertActionType.destructive;
 
+  /// Creates a new [NativeAlertAction] with a cancel type.
   const NativeAlertAction.cancel({required this.title, this.onPressed})
     : type = NativeAlertActionType.cancel;
 
+  /// The title of the action.
   final String title;
+
+  /// The type of the action.
   final NativeAlertActionType type;
+
+  /// The callback function to be called when the action is pressed.
   final void Function()? onPressed;
 }
 
@@ -180,7 +200,7 @@ Future<void> showNativeConfirmDialog(
   bool useRootNavigator = true,
 }) async {
   if (Theme.of(context).platform == TargetPlatform.iOS) {
-    showNativeActionSheet(
+    await showNativeActionSheet(
       context,
       title: title,
       message: message,
@@ -196,7 +216,7 @@ Future<void> showNativeConfirmDialog(
     return;
   }
 
-  showNativeAlertDialog(
+  await showNativeAlertDialog(
     context,
     title: title,
     message: message,

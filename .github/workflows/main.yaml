@@ -27,3 +27,4 @@ jobs:
     with:
       flutter_channel: stable
       package_get_excludes: example
+      min_coverage: 45

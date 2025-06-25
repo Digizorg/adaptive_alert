@@ -1,6 +1,7 @@
 import 'package:native_alert/native_alert_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
+/// The interface that implementations of NativeAlert must implement.
 abstract class NativeAlertPlatform extends PlatformInterface {
   /// Constructs a NativeAlertPlatform.
   NativeAlertPlatform() : super(token: _token);
@@ -22,6 +23,7 @@ abstract class NativeAlertPlatform extends PlatformInterface {
     _instance = instance;
   }
 
+  /// Shows a native alert dialog.
   Future<String?> showNativeAlertDialog({
     required String title,
     required String message,
@@ -35,6 +37,7 @@ abstract class NativeAlertPlatform extends PlatformInterface {
     );
   }
 
+  /// Shows a native action sheet.
   Future<String?> showNativeActionSheet({
     required List<Map<String, String?>> actions,
     required Map<String, String?> cancelAction,

@@ -1,5 +1,5 @@
 name: native_alert
-description: "A new Flutter plugin project."
+description: "A Flutter plugin to show native alerts and action sheets on iOS, with adaptive fallbacks for other platforms."
 version: 0.0.1
 homepage: https://digizorg.app/
 
@@ -13,9 +13,9 @@ dependencies:
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
   very_good_analysis: ^9.0.0
 
 # For information on the generic Dart part of this file, see the
