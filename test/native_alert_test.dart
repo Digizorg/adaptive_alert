@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -164,6 +165,89 @@ void main() {
           },
         ),
       ));
+    });
+  });
+
+  group('Fallback UI Tests', () {
+    testWidgets('showNativeAlertDialog shows Material dialog on Android', (tester) async {
+      final originalPlatform = debugDefaultTargetPlatformOverride;
+      try {
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
+        var primaryPressed = false;
+
+        await tester.pumpWidget(MaterialApp(
+          home: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => showNativeAlertDialog(
+                context,
+                title: 'Android Alert',
+                message: 'This is a Material dialog.',
+                primaryAction: NativeAlertAction(
+                  title: 'OK',
+                  onPressed: () => primaryPressed = true,
+                ),
+                secondaryAction: const NativeAlertAction(
+                  title: 'Cancel',
+                ),
+              ),
+              child: const Text('Show Alert'),
+            ),
+          ),
+        ));
+
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(AlertDialog), findsOneWidget);
+        expect(find.text('Android Alert'), findsOneWidget);
+        expect(find.text('This is a Material dialog.'), findsOneWidget);
+        expect(find.text('OK'), findsOneWidget);
+        expect(find.text('Cancel'), findsOneWidget);
+
+        await tester.tap(find.text('OK'));
+        expect(primaryPressed, isTrue);
+      } finally {
+        debugDefaultTargetPlatformOverride = originalPlatform;
+      }
+    });
+
+    testWidgets('showNativeActionSheet shows BottomSheet on Android', (tester) async {
+      final originalPlatform = debugDefaultTargetPlatformOverride;
+      try {
+        debugDefaultTargetPlatformOverride = TargetPlatform.android;
+        var action1Pressed = false;
+
+        await tester.pumpWidget(MaterialApp(
+          home: Builder(
+            builder: (context) => ElevatedButton(
+              onPressed: () => showNativeActionSheet(
+                context,
+                title: 'Android Sheet',
+                actions: [
+                  NativeAlertAction(
+                    title: 'Action 1',
+                    onPressed: () => action1Pressed = true,
+                  ),
+                ],
+                cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+              ),
+              child: const Text('Show Sheet'),
+            ),
+          ),
+        ));
+
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(BottomSheet), findsOneWidget);
+        expect(find.text('Android Sheet'), findsOneWidget);
+        expect(find.widgetWithText(ListTile, 'Action 1'), findsOneWidget);
+
+        await tester.tap(find.text('Action 1'));
+        expect(action1Pressed, isTrue);
+      } finally {
+        debugDefaultTargetPlatformOverride = originalPlatform;
+      }
     });
   });
 }
