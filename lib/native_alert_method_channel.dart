@@ -7,7 +7,7 @@ import 'native_alert_platform_interface.dart';
 class MethodChannelNativeAlert extends NativeAlertPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('native_alert');
+  final methodChannel = const MethodChannel('app.digizorg.native_alert');
 
     @override
   Future<String?> showNativeAlertDialog({
@@ -15,8 +15,8 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
     required String message,
     required String primaryButtonTitle,
     required String primaryButtonActionType,
-    required String secondaryButtonTitle,
-    required String secondaryButtonActionType,
+    String? secondaryButtonTitle,
+    String? secondaryButtonActionType,
   }) async {
     final result = await methodChannel.invokeMethod<String>(
       'showNativeAlertDialog',
@@ -34,10 +34,10 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
 
   @override
   Future<String?> showNativeActionSheet({
-    required String? title,
-    required String? message,
-    required List<Map<String, String>> actions,
-    required Map<String, String> cancelAction,
+    String? title,
+    String? message,
+    required List<Map<String, String?>> actions,
+    required Map<String, String?> cancelAction,
   }) async {
     final result = await methodChannel.invokeMethod<String>(
       'showNativeActionSheet',

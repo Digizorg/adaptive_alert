@@ -3,7 +3,7 @@ import UIKit
 
 public class NativeAlertPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "native_alert", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "app.digizorg.native_alert", binaryMessenger: registrar.messenger())
     let instance = NativeAlertPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }

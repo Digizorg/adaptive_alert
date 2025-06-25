@@ -28,17 +28,17 @@ abstract class NativeAlertPlatform extends PlatformInterface {
     required String message,
     required String primaryButtonTitle,
     required String primaryButtonActionType,
-    required String secondaryButtonTitle,
-    required String secondaryButtonActionType,
+    String? secondaryButtonTitle,
+    String? secondaryButtonActionType,
   }) {
     throw UnimplementedError('showNativeAlertDialog() has not been implemented.');
   }
 
   Future<String?> showNativeActionSheet({
-    required String? title,
-    required String? message,
-    required List<Map<String, String>> actions,
-    required Map<String, String> cancelAction,
+    String? title,
+    String? message,
+    required List<Map<String, String?>> actions,
+    required Map<String, String?> cancelAction,
   }) {
     throw UnimplementedError('showNativeActionSheet() has not been implemented.');
   }
