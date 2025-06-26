@@ -70,6 +70,16 @@ public class NativeAlertPlugin: NSObject, FlutterPlugin {
             alert.addAction(cancelAlertAction)
         }
 
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let popoverController = alert.popoverPresentationController {
+                if let topVC = UIApplication.topViewController() {
+                    popoverController.sourceView = topVC.view
+                    popoverController.sourceRect = CGRect(x: topVC.view.bounds.midX, y: topVC.view.bounds.midY, width: 0, height: 0)
+                    popoverController.permittedArrowDirections = []
+                }
+            }
+        }
+
         DispatchQueue.main.async {
           UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
       }
