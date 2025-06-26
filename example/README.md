@@ -1,6 +1,6 @@
-# native_alert_example
+# adaptive_alert_example
 
-Demonstrates how to use the native_alert plugin.
+Demonstrates how to use the adaptive_alert plugin.
 
 ## Getting Started
 

@@ -1,11 +1,11 @@
+import 'package:adaptive_alert/adaptive_alert_platform_interface.dart';
+import 'package:adaptive_alert/iterable_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:native_alert/iterable_extensions.dart';
-import 'package:native_alert/native_alert_platform_interface.dart';
 
-/// The type of an action in a native alert dialog.
-enum NativeAlertActionType {
+/// The type of an action in an adaptive alert dialog.
+enum AdaptiveAlertActionType {
   /// A normal action.
   normal,
 
@@ -16,43 +16,43 @@ enum NativeAlertActionType {
   cancel;
 
   /// Returns true if this action is a normal action.
-  bool get isNormal => this == NativeAlertActionType.normal;
+  bool get isNormal => this == AdaptiveAlertActionType.normal;
 
   /// Returns true if this action is a destructive action.
-  bool get isDestructive => this == NativeAlertActionType.destructive;
+  bool get isDestructive => this == AdaptiveAlertActionType.destructive;
 
   /// Returns true if this action is a cancel action.
-  bool get isCancel => this == NativeAlertActionType.cancel;
+  bool get isCancel => this == AdaptiveAlertActionType.cancel;
 }
 
-/// An action in a native alert dialog.
-class NativeAlertAction {
-  /// Creates a new [NativeAlertAction].
-  const NativeAlertAction({
+/// An action in an adaptive alert dialog.
+class AdaptiveAlertAction {
+  /// Creates a new [AdaptiveAlertAction].
+  const AdaptiveAlertAction({
     required this.title,
-    this.type = NativeAlertActionType.normal,
+    this.type = AdaptiveAlertActionType.normal,
     this.onPressed,
   });
 
-  /// Creates a new [NativeAlertAction] with a destructive type.
-  const NativeAlertAction.destructive({required this.title, this.onPressed})
-    : type = NativeAlertActionType.destructive;
+  /// Creates a new [AdaptiveAlertAction] with a destructive type.
+  const AdaptiveAlertAction.destructive({required this.title, this.onPressed})
+    : type = AdaptiveAlertActionType.destructive;
 
-  /// Creates a new [NativeAlertAction] with a cancel type.
-  const NativeAlertAction.cancel({required this.title, this.onPressed})
-    : type = NativeAlertActionType.cancel;
+  /// Creates a new [AdaptiveAlertAction] with a cancel type.
+  const AdaptiveAlertAction.cancel({required this.title, this.onPressed})
+    : type = AdaptiveAlertActionType.cancel;
 
   /// The title of the action.
   final String title;
 
   /// The type of the action.
-  final NativeAlertActionType type;
+  final AdaptiveAlertActionType type;
 
   /// The callback function to be called when the action is pressed.
   final void Function()? onPressed;
 }
 
-/// Displays a native alert dialog.
+/// Displays an adaptive alert dialog.
 ///
 /// On iOS, this function uses a native `UIAlertController` with the `.alert`
 /// style, providing a familiar and seamless user experience. On other platforms
@@ -60,7 +60,7 @@ class NativeAlertAction {
 ///
 /// The dialog includes a [title], a [message], and up to two actions:
 /// [primaryAction] and an optional [secondaryAction]. The appearance and
-/// behavior of these actions are determined by their `NativeAlertActionType`.
+/// behavior of these actions are determined by their `AdaptiveAlertActionType`.
 ///
 /// - [context]: The `BuildContext` from which to present the dialog.
 /// - [primaryAction]: The main action button for the dialog.
@@ -71,10 +71,10 @@ class NativeAlertAction {
 /// dialog. Not used on native iOS.
 /// - [dismissible]: Whether the dialog can be dismissed by tapping outside of
 /// it. Not used on native iOS.
-Future<void> showNativeAlertDialog(
+Future<void> showAdaptiveAlertDialog(
   BuildContext context, {
-  required NativeAlertAction primaryAction,
-  NativeAlertAction? secondaryAction,
+  required AdaptiveAlertAction primaryAction,
+  AdaptiveAlertAction? secondaryAction,
   String? title,
   String? message,
   bool useRootNavigator = true,
@@ -123,7 +123,7 @@ Future<void> showNativeAlertDialog(
       );
     }
 
-    final result = await NativeAlertPlatform.instance.showNativeAlertDialog(
+    final result = await AdaptiveAlertPlatform.instance.showAdaptiveAlertDialog(
       title: title ?? '',
       message: message ?? '',
       primaryButtonTitle: primaryAction.title,
@@ -191,21 +191,21 @@ Future<void> showNativeAlertDialog(
 /// - [message]: The descriptive message explaining the action.
 /// - [useRootNavigator]: Whether to use the root navigator for presenting the
 /// dialog. Not used on native iOS.
-Future<void> showNativeConfirmDialog(
+Future<void> showAdaptiveConfirmDialog(
   BuildContext context, {
-  required NativeAlertAction confirmAction,
-  required NativeAlertAction cancelAction,
+  required AdaptiveAlertAction confirmAction,
+  required AdaptiveAlertAction cancelAction,
   String? title,
   String? message,
   bool useRootNavigator = true,
 }) async {
   if (Theme.of(context).platform == TargetPlatform.iOS) {
-    await showNativeActionSheet(
+    await showAdaptiveActionSheet(
       context,
       title: title,
       message: message,
       actions: [
-        NativeAlertAction.destructive(
+        AdaptiveAlertAction.destructive(
           title: confirmAction.title,
           onPressed: confirmAction.onPressed,
         ),
@@ -216,7 +216,7 @@ Future<void> showNativeConfirmDialog(
     return;
   }
 
-  await showNativeAlertDialog(
+  await showAdaptiveAlertDialog(
     context,
     title: title,
     message: message,
@@ -225,7 +225,7 @@ Future<void> showNativeConfirmDialog(
   );
 }
 
-/// Shows a native-looking action sheet.
+/// Shows an adaptive action sheet.
 ///
 /// On iOS, this function displays a native `UIAlertController` with the
 /// `.actionSheet` style, which is the standard for presenting a set of choices
@@ -238,17 +238,17 @@ Future<void> showNativeConfirmDialog(
 /// match the platform's design guidelines.
 ///
 /// - [context]: The `BuildContext` from which to present the action sheet.
-/// - [actions]: A list of `NativeAlertAction`s to display as choices.
+/// - [actions]: A list of `AdaptiveAlertAction`s to display as choices.
 /// - [cancelAction]: The action that dismisses the action sheet without
-/// performing any operation. Must be of type `NativeAlertActionType.cancel`.
+/// performing any operation. Must be of type `AdaptiveAlertActionType.cancel`.
 /// - [title]: An optional title for the action sheet.
 /// - [message]: An optional message displayed below the title.
 /// - [useRootNavigator]: Whether to use the root navigator for presenting the
 /// action sheet. Not used on native iOS.
-Future<void> showNativeActionSheet(
+Future<void> showAdaptiveActionSheet(
   BuildContext context, {
-  required List<NativeAlertAction> actions,
-  required NativeAlertAction cancelAction,
+  required List<AdaptiveAlertAction> actions,
+  required AdaptiveAlertAction cancelAction,
   String? title,
   String? message,
   bool useRootNavigator = true,
@@ -259,14 +259,14 @@ Future<void> showNativeActionSheet(
   // Check if cancelAction is of type cancel
   assert(cancelAction.type.isCancel, 'cancelAction must be of type cancel');
 
-  // Check if there is at most one NativeAlertAction with type cancel
+  // Check if there is at most one AdaptiveAlertAction with type cancel
   final cancelActions = [
     ...actions,
     cancelAction,
   ].where((action) => action.type.isCancel).toList();
   assert(
     cancelActions.length <= 1,
-    'There must be at most one action with type NativeAlertActionType.cancel',
+    'There must be at most one action with type AdaptiveAlertActionType.cancel',
   );
 
   if (Theme.of(context).platform == TargetPlatform.iOS) {
@@ -300,7 +300,7 @@ Future<void> showNativeActionSheet(
       );
     }
 
-    final result = await NativeAlertPlatform.instance.showNativeActionSheet(
+    final result = await AdaptiveAlertPlatform.instance.showAdaptiveActionSheet(
       title: title,
       message: message,
       actions: actions

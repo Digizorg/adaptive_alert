@@ -3,14 +3,14 @@ import UIKit
 
 public class NativeAlertPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "app.digizorg.native_alert", binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: "app.digizorg.adaptive_alert", binaryMessenger: registrar.messenger())
     let instance = NativeAlertPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
       public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
-    case "showNativeAlertDialog":
+    case "showAdaptiveAlertDialog":
       guard let args = call.arguments as? [String: Any],
             let title = args["title"] as? String,
             let message = args["message"] as? String,
@@ -40,11 +40,11 @@ public class NativeAlertPlugin: NSObject, FlutterPlugin {
           UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
       }
 
-        case "showNativeActionSheet":
+        case "showAdaptiveActionSheet":
         guard let args = call.arguments as? [String: Any],
               let actions = args["actions"] as? [[String: String]],
               let cancelAction = args["cancelAction"] as? [String: String] else {
-            result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments for showNativeActionSheet", details: nil))
+            result(FlutterError(code: "INVALID_ARGUMENTS", message: "Invalid arguments for showAdaptiveActionSheet", details: nil))
             return
         }
         let title = args["title"] as? String

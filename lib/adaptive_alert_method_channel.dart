@@ -1,15 +1,17 @@
+import 'package:adaptive_alert/adaptive_alert_platform_interface.dart'
+    show AdaptiveAlertPlatform;
+import 'package:adaptive_alert/adaptive_alert_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:native_alert/native_alert_platform_interface.dart';
 
-/// An implementation of [NativeAlertPlatform] that uses method channels.
-class MethodChannelNativeAlert extends NativeAlertPlatform {
+/// An implementation of [AdaptiveAlertPlatform] that uses method channels.
+class MethodChannelAdaptiveAlert extends AdaptiveAlertPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('app.digizorg.native_alert');
+  final methodChannel = const MethodChannel('app.digizorg.adaptive_alert');
 
   @override
-  Future<String?> showNativeAlertDialog({
+  Future<String?> showAdaptiveAlertDialog({
     required String title,
     required String message,
     required String primaryButtonTitle,
@@ -18,7 +20,7 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
     String? secondaryButtonActionType,
   }) async {
     final result = await methodChannel.invokeMethod<String>(
-      'showNativeAlertDialog',
+      'showAdaptiveAlertDialog',
       {
         'title': title,
         'message': message,
@@ -32,14 +34,14 @@ class MethodChannelNativeAlert extends NativeAlertPlatform {
   }
 
   @override
-  Future<String?> showNativeActionSheet({
+  Future<String?> showAdaptiveActionSheet({
     required List<Map<String, String?>> actions,
     required Map<String, String?> cancelAction,
     String? title,
     String? message,
   }) async {
     final result = await methodChannel.invokeMethod<String>(
-      'showNativeActionSheet',
+      'showAdaptiveActionSheet',
       {
         'title': title,
         'message': message,

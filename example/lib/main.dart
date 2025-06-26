@@ -1,7 +1,7 @@
 import 'dart:developer';
 
+import 'package:adaptive_alert/adaptive_alert.dart';
 import 'package:flutter/material.dart';
-import 'package:native_alert/native_alert.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Native Alert Example',
+      title: 'Adaptive Alert Example',
       home: const MyAppScreen(),
     );
   }
@@ -29,7 +29,7 @@ class MyAppScreen extends StatelessWidget {
       child: Builder(
         builder: (context) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Native Alert Example')),
+            appBar: AppBar(title: const Text('Adaptive Alert Example')),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -38,17 +38,17 @@ class MyAppScreen extends StatelessWidget {
                   ElevatedButton(
                     child: const Text('Show Alert'),
                     onPressed: () {
-                      showNativeAlertDialog(
+                      showAdaptiveAlertDialog(
                         context,
                         title: 'Alert',
                         message: 'This is an alert',
-                        primaryAction: NativeAlertAction.destructive(
+                        primaryAction: AdaptiveAlertAction.destructive(
                           title: 'OK',
                           onPressed: () {
                             log('OK');
                           },
                         ),
-                        secondaryAction: NativeAlertAction.cancel(
+                        secondaryAction: AdaptiveAlertAction.cancel(
                           title: 'Cancel',
                           onPressed: () {
                             log('Cancel');
@@ -60,17 +60,17 @@ class MyAppScreen extends StatelessWidget {
                   ElevatedButton(
                     child: const Text('Show Confirm Alert'),
                     onPressed: () {
-                      showNativeConfirmDialog(
+                      showAdaptiveConfirmDialog(
                         context,
                         title: 'Would you like to delete this item?',
                         message: 'This is a confirm alert',
-                        confirmAction: NativeAlertAction.destructive(
+                        confirmAction: AdaptiveAlertAction.destructive(
                           title: 'Delete',
                           onPressed: () {
                             log('Delete');
                           },
                         ),
-                        cancelAction: NativeAlertAction.cancel(
+                        cancelAction: AdaptiveAlertAction.cancel(
                           title: 'Cancel',
                           onPressed: () {
                             log('Cancel');
@@ -82,37 +82,37 @@ class MyAppScreen extends StatelessWidget {
                   ElevatedButton(
                     child: const Text('Show Action Sheet'),
                     onPressed: () {
-                      showNativeActionSheet(
+                      showAdaptiveActionSheet(
                         context,
                         title: 'Action Sheet',
                         message: 'This is an action sheet',
                         actions: [
-                          NativeAlertAction(
+                          AdaptiveAlertAction(
                             title: 'Normal 1',
                             onPressed: () {
                               log('Normal 1');
                             },
                           ),
-                          NativeAlertAction(
+                          AdaptiveAlertAction(
                             title: 'Normal 2',
                             onPressed: () {
                               log('Normal 2');
                             },
                           ),
-                          NativeAlertAction.destructive(
+                          AdaptiveAlertAction.destructive(
                             title: 'Destructive 1',
                             onPressed: () {
                               log('Destructive 1');
                             },
                           ),
-                          NativeAlertAction.destructive(
+                          AdaptiveAlertAction.destructive(
                             title: 'Destructive 2',
                             onPressed: () {
                               log('Destructive 2');
                             },
                           ),
                         ],
-                        cancelAction: NativeAlertAction.cancel(
+                        cancelAction: AdaptiveAlertAction.cancel(
                           title: 'Cancel',
                           onPressed: () {
                             log('Cancel');

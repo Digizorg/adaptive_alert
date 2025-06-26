@@ -1,4 +1,4 @@
-# native_alert
+# adaptive_alert
 
 A Flutter plugin to show native alerts and action sheets on iOS, with adaptive fallbacks for other platforms.
 
@@ -17,19 +17,15 @@ This package provides a simple way to display platform-native dialogs. On iOS, i
 | Platform | Implementation                                            |
 |----------|-----------------------------------------------------------|
 | **iOS**  | **Native `UIAlertController`**                            |
-| Android  | Material `AlertDialog` / `ModalBottomSheet`               |
-| Web      | Cupertino `CupertinoAlertDialog` / `CupertinoActionSheet` |
-| macOS    | Material `AlertDialog` / `ModalBottomSheet`               |
-| Windows  | Material `AlertDialog` / `ModalBottomSheet`               |
-| Linux    | Material `AlertDialog` / `ModalBottomSheet`               |
+| Others   | Flutter's built-in `AlertDialog` / `ModalBottomSheet`     |
 
 ## Getting Started
 
-Add `native_alert` to your `pubspec.yaml` file:
+Add `adaptive_alert` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  native_alert: ^1.0.0 # Replace with the latest version
+  adaptive_alert: ^1.0.0 # Replace with the latest version
 ```
 
 Then, run `flutter pub get`.
@@ -39,41 +35,41 @@ Then, run `flutter pub get`.
 Import the package in your Dart file:
 
 ```dart
-import 'package:native_alert/native_alert.dart';
+import 'package:adaptive_alert/adaptive_alert.dart';
 ```
 
 ### Defining Actions
 
-Actions are defined using the `NativeAlertAction` class. Each action has a `title`, an optional `onPressed` callback, and a `type` (`NativeAlertActionType`).
+Actions are defined using the `AdaptiveAlertAction` class. Each action has a `title`, an optional `onPressed` callback, and a `type` (`AdaptiveAlertActionType`).
 
 ```dart
 // A standard action
-final okAction = NativeAlertAction(
+final okAction = AdaptiveAlertAction(
   title: 'OK',
   onPressed: () => print('OK pressed'),
 );
 
 // A destructive action
-final deleteAction = NativeAlertAction(
+final deleteAction = AdaptiveAlertAction(
   title: 'Delete',
-  type: NativeAlertActionType.destructive,
+  type: AdaptiveAlertActionType.destructive,
   onPressed: () => print('Delete pressed'),
 );
 
 // A cancel action
-final cancelAction = NativeAlertAction(
+final cancelAction = AdaptiveAlertAction(
   title: 'Cancel',
-  type: NativeAlertActionType.cancel,
+  type: AdaptiveAlertActionType.cancel,
   onPressed: () => print('Cancel pressed'),
 );
 ```
 
 ### Showing an Alert Dialog
 
-Use `showNativeAlertDialog` to display a standard alert with one or two actions.
+Use `showAdaptiveAlertDialog` to display a standard alert with one or two actions.
 
 ```dart
-showNativeAlertDialog(
+showAdaptiveAlertDialog(
   context,
   title: 'Alert',
   message: 'This is a native alert.',
@@ -84,10 +80,10 @@ showNativeAlertDialog(
 
 ### Showing a Confirmation Dialog
 
-Use `showNativeConfirmDialog` for critical actions. On iOS, this renders as an action sheet.
+Use `showAdaptiveConfirmDialog` for critical actions. On iOS, this renders as an action sheet.
 
 ```dart
-showNativeConfirmDialog(
+showAdaptiveConfirmDialog(
   context,
   title: 'Confirm Deletion',
   message: 'Are you sure you want to delete this item?',
@@ -98,16 +94,16 @@ showNativeConfirmDialog(
 
 ### Showing an Action Sheet
 
-Use `showNativeActionSheet` to present a list of choices.
+Use `showAdaptiveActionSheet` to present a list of choices.
 
 ```dart
-showNativeActionSheet(
+showAdaptiveActionSheet(
   context,
   title: 'Options',
   message: 'Please select an option.',
   actions: [
-    NativeAlertAction(title: 'Option 1', onPressed: () {}),
-    NativeAlertAction(title: 'Option 2', onPressed: () {}),
+    AdaptiveAlertAction(title: 'Option 1', onPressed: () {}),
+    AdaptiveAlertAction(title: 'Option 2', onPressed: () {}),
     deleteAction,
   ],
   cancelAction: cancelAction,
@@ -116,11 +112,11 @@ showNativeActionSheet(
 
 ## API Reference
 
-- `showNativeAlertDialog`: Displays a standard alert dialog.
-- `showNativeConfirmDialog`: Displays a confirmation dialog (or action sheet on iOS).
-- `showNativeActionSheet`: Displays an action sheet with a list of options.
-- `NativeAlertAction`: A class to define an action for an alert or action sheet.
-- `NativeAlertActionType`: An enum for action styles (`normal`, `destructive`, `cancel`).
+- `showAdaptiveAlertDialog`: Displays a standard alert dialog.
+- `showAdaptiveConfirmDialog`: Displays a confirmation dialog (or action sheet on iOS).
+- `showAdaptiveActionSheet`: Displays an action sheet with a list of options.
+- `AdaptiveAlertAction`: A class to define an action for an alert or action sheet.
+- `AdaptiveAlertActionType`: An enum for action styles (`normal`, `destructive`, `cancel`).
 
 ## Contributing
 

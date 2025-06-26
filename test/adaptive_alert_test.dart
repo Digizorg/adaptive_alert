@@ -1,15 +1,18 @@
+//
+// ignore_for_file: lines_longer_than_80_chars
+
+import 'package:adaptive_alert/adaptive_alert.dart';
+import 'package:adaptive_alert/adaptive_alert_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:native_alert/native_alert.dart';
-import 'package:native_alert/native_alert_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  group('NativeAlert', () {
-    const channel = MethodChannel('app.digizorg.native_alert');
+  group('AdaptiveAlert', () {
+    const channel = MethodChannel('app.digizorg.adaptive_alert');
     final log = <MethodCall>[];
 
     setUp(() {
@@ -21,8 +24,8 @@ void main() {
       log.clear();
     });
 
-    test('showNativeAlertDialog sends correct arguments', () async {
-      await NativeAlertPlatform.instance.showNativeAlertDialog(
+    test('showAdaptiveAlertDialog sends correct arguments', () async {
+      await AdaptiveAlertPlatform.instance.showAdaptiveAlertDialog(
         title: 'Test Title',
         message: 'Test Message',
         primaryButtonTitle: 'OK',
@@ -33,7 +36,7 @@ void main() {
 
       expect(log, <Matcher>[
         isMethodCall(
-          'showNativeAlertDialog',
+          'showAdaptiveAlertDialog',
           arguments: {
             'title': 'Test Title',
             'message': 'Test Message',
@@ -46,8 +49,8 @@ void main() {
       ]);
     });
 
-    test('showNativeActionSheet sends correct arguments', () async {
-      await NativeAlertPlatform.instance.showNativeActionSheet(
+    test('showAdaptiveActionSheet sends correct arguments', () async {
+      await AdaptiveAlertPlatform.instance.showAdaptiveActionSheet(
         title: 'Action Sheet',
         message: 'Select an option',
         actions: [
@@ -59,7 +62,7 @@ void main() {
 
       expect(log, <Matcher>[
         isMethodCall(
-          'showNativeActionSheet',
+          'showAdaptiveActionSheet',
           arguments: {
             'title': 'Action Sheet',
             'message': 'Select an option',
@@ -74,9 +77,9 @@ void main() {
     });
 
     test(
-      'showNativeAlertDialog with only primary action sends correct arguments',
+      'showAdaptiveAlertDialog with only primary action sends correct arguments',
       () async {
-        await NativeAlertPlatform.instance.showNativeAlertDialog(
+        await AdaptiveAlertPlatform.instance.showAdaptiveAlertDialog(
           title: 'Test Title',
           message: 'Test Message',
           primaryButtonTitle: 'OK',
@@ -85,7 +88,7 @@ void main() {
 
         expect(log, <Matcher>[
           isMethodCall(
-            'showNativeAlertDialog',
+            'showAdaptiveAlertDialog',
             arguments: {
               'title': 'Test Title',
               'message': 'Test Message',
@@ -100,9 +103,9 @@ void main() {
     );
 
     test(
-      'showNativeActionSheet with no title/message sends correct arguments',
+      'showAdaptiveActionSheet with no title/message sends correct arguments',
       () async {
-        await NativeAlertPlatform.instance.showNativeActionSheet(
+        await AdaptiveAlertPlatform.instance.showAdaptiveActionSheet(
           actions: [
             {'title': 'Option 1', 'type': 'normal'},
           ],
@@ -111,7 +114,7 @@ void main() {
 
         expect(log, <Matcher>[
           isMethodCall(
-            'showNativeActionSheet',
+            'showAdaptiveActionSheet',
             arguments: {
               'title': null,
               'message': null,
@@ -126,8 +129,8 @@ void main() {
     );
   });
 
-  group('NativeAlert Assertions', () {
-    testWidgets('showNativeActionSheet throws assertion for empty actions', (
+  group('AdaptiveAlert Assertions', () {
+    testWidgets('showAdaptiveActionSheet throws assertion for empty actions', (
       tester,
     ) async {
       await tester.pumpWidget(
@@ -135,10 +138,12 @@ void main() {
           home: Builder(
             builder: (context) {
               expect(
-                () => showNativeActionSheet(
+                () => showAdaptiveActionSheet(
                   context,
                   actions: [],
-                  cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+                  cancelAction: const AdaptiveAlertAction.cancel(
+                    title: 'Cancel',
+                  ),
                 ),
                 throwsAssertionError,
               );
@@ -150,17 +155,17 @@ void main() {
     });
 
     testWidgets(
-      'showNativeActionSheet throws assertion for wrong cancel type',
+      'showAdaptiveActionSheet throws assertion for wrong cancel type',
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(
               builder: (context) {
                 expect(
-                  () => showNativeActionSheet(
+                  () => showAdaptiveActionSheet(
                     context,
-                    actions: [const NativeAlertAction(title: 'OK')],
-                    cancelAction: const NativeAlertAction(
+                    actions: [const AdaptiveAlertAction(title: 'OK')],
+                    cancelAction: const AdaptiveAlertAction(
                       title: 'Cancel',
                     ), // Not type cancel
                   ),
@@ -175,19 +180,19 @@ void main() {
     );
 
     testWidgets(
-      'showNativeActionSheet throws assertion for multiple cancel actions',
+      'showAdaptiveActionSheet throws assertion for multiple cancel actions',
       (tester) async {
         await tester.pumpWidget(
           MaterialApp(
             home: Builder(
               builder: (context) {
                 expect(
-                  () => showNativeActionSheet(
+                  () => showAdaptiveActionSheet(
                     context,
                     actions: [
-                      const NativeAlertAction.cancel(title: 'Cancel 1'),
+                      const AdaptiveAlertAction.cancel(title: 'Cancel 1'),
                     ],
-                    cancelAction: const NativeAlertAction.cancel(
+                    cancelAction: const AdaptiveAlertAction.cancel(
                       title: 'Cancel 2',
                     ),
                   ),
@@ -203,7 +208,7 @@ void main() {
   });
 
   group('Fallback UI Tests', () {
-    testWidgets('showNativeAlertDialog shows Material dialog on Android', (
+    testWidgets('showAdaptiveAlertDialog shows Material dialog on Android', (
       tester,
     ) async {
       final originalPlatform = debugDefaultTargetPlatformOverride;
@@ -215,15 +220,15 @@ void main() {
           MaterialApp(
             home: Builder(
               builder: (context) => ElevatedButton(
-                onPressed: () => showNativeAlertDialog(
+                onPressed: () => showAdaptiveAlertDialog(
                   context,
                   title: 'Android Alert',
                   message: 'This is a Material dialog.',
-                  primaryAction: NativeAlertAction(
+                  primaryAction: AdaptiveAlertAction(
                     title: 'OK',
                     onPressed: () => primaryPressed = true,
                   ),
-                  secondaryAction: const NativeAlertAction(
+                  secondaryAction: const AdaptiveAlertAction(
                     title: 'Cancel',
                   ),
                 ),
@@ -249,7 +254,7 @@ void main() {
       }
     });
 
-    testWidgets('showNativeActionSheet shows BottomSheet on Android', (
+    testWidgets('showAdaptiveActionSheet shows BottomSheet on Android', (
       tester,
     ) async {
       final originalPlatform = debugDefaultTargetPlatformOverride;
@@ -261,16 +266,18 @@ void main() {
           MaterialApp(
             home: Builder(
               builder: (context) => ElevatedButton(
-                onPressed: () => showNativeActionSheet(
+                onPressed: () => showAdaptiveActionSheet(
                   context,
                   title: 'Android Sheet',
                   actions: [
-                    NativeAlertAction(
+                    AdaptiveAlertAction(
                       title: 'Action 1',
                       onPressed: () => action1Pressed = true,
                     ),
                   ],
-                  cancelAction: const NativeAlertAction.cancel(title: 'Cancel'),
+                  cancelAction: const AdaptiveAlertAction.cancel(
+                    title: 'Cancel',
+                  ),
                 ),
                 child: const Text('Show Sheet'),
               ),
