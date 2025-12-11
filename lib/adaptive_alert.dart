@@ -211,6 +211,7 @@ Future<void> showAdaptiveConfirmDialog(
         ),
       ],
       cancelAction: cancelAction,
+      useRootNavigator: useRootNavigator,
     );
 
     return;
@@ -222,6 +223,7 @@ Future<void> showAdaptiveConfirmDialog(
     message: message,
     primaryAction: confirmAction,
     secondaryAction: cancelAction,
+    useRootNavigator: useRootNavigator,
   );
 }
 
