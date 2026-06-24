@@ -102,7 +102,14 @@ public class NativeAlertPlugin: NSObject, FlutterPlugin {
 }
 
 extension UIApplication {
-    class func topViewController(controller: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    private var adaptiveAlertKeyWindow: UIWindow? {
+        connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows)
+            .first { $0.isKeyWindow }
+    }
+
+    class func topViewController(controller: UIViewController? = UIApplication.shared.adaptiveAlertKeyWindow?.rootViewController) -> UIViewController? {
         if let navigationController = controller as? UINavigationController {
             return topViewController(controller: navigationController.visibleViewController)
         }
