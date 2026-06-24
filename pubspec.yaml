@@ -1,12 +1,12 @@
 name: adaptive_alert
 description: "A Flutter plugin to show native alerts and action sheets on iOS, with adaptive fallbacks for other platforms."
-version: 0.0.2
+version: 0.0.3
 homepage: https://digizorg.app/
 publish_to: https://dart.cloudsmith.io/digizorg/default/
 
 environment:
-  sdk: ^3.8.1
-  flutter: '>=3.3.0'
+  sdk: ^3.11.0
+  flutter: '>=3.41.0'
 
 dependencies:
   flutter:
