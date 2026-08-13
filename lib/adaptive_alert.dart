@@ -105,7 +105,6 @@ Future<void> showAdaptiveAlertDialog(
                   Navigator.of(context).pop();
                   secondaryAction.onPressed?.call();
                 },
-                isDefaultAction: secondaryAction.type.isCancel,
                 isDestructiveAction: secondaryAction.type.isDestructive,
                 child: Text(secondaryAction.title),
               ),
@@ -114,7 +113,7 @@ Future<void> showAdaptiveAlertDialog(
                 Navigator.of(context).pop();
                 primaryAction.onPressed?.call();
               },
-              isDefaultAction: primaryAction.type.isCancel,
+              isDefaultAction: true,
               isDestructiveAction: primaryAction.type.isDestructive,
               child: Text(primaryAction.title),
             ),
