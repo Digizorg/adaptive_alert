@@ -24,17 +24,22 @@ public class NativeAlertPlugin: NSObject, FlutterPlugin {
 
       let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-      let primaryStyle = getActionStyle(from: primaryButtonActionType)
-      alert.addAction(UIAlertAction(title: primaryButtonTitle, style: primaryStyle, handler: { _ in
-        result("primary")
-      }))
-
       if !secondaryButtonTitle.isEmpty {
           let secondaryStyle = getActionStyle(from: secondaryButtonActionType)
           alert.addAction(UIAlertAction(title: secondaryButtonTitle, style: secondaryStyle, handler: { _ in
             result("secondary")
           }))
       }
+
+      let primaryStyle = getActionStyle(from: primaryButtonActionType)
+      let primaryAction = UIAlertAction(title: primaryButtonTitle, style: primaryStyle, handler: { _ in
+        result("primary")
+      })
+      alert.addAction(primaryAction)
+
+      // Emphasize the primary action (renders its title in bold), which is the
+      // native way to highlight the recommended button in a UIAlertController.
+      alert.preferredAction = primaryAction
 
       DispatchQueue.main.async {
           UIApplication.topViewController()?.present(alert, animated: true, completion: nil)
