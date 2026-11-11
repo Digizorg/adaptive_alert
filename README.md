@@ -1,23 +1,37 @@
 # adaptive_alert
 
-A Flutter plugin to show native alerts and action sheets on iOS, with adaptive fallbacks for other platforms.
+A Flutter plugin to show native alerts and action sheets on iOS, with adaptive
+fallbacks for other platforms.
 
-This package provides a simple way to display platform-native dialogs. On iOS, it uses `UIAlertController` to present alerts and action sheets, ensuring a seamless user experience. On other platforms like Android and web, it gracefully falls back to Flutter's built-in widgets.
+This package provides a simple way to display platform-native dialogs. On iOS,
+it uses `UIAlertController` to present alerts and action sheets, ensuring a
+seamless user experience. On other platforms like Android and web, it gracefully
+falls back to standalone Material and Cupertino widgets.
 
 ## Features
 
-- **Native iOS Look and Feel**: Uses `UIAlertController` for authentic iOS alerts and action sheets.
-- **Adaptive Fallbacks**: Provides Material `AlertDialog` and `ModalBottomSheet` widgets for non-iOS platforms.
-- **Customizable Actions**: Define actions with different styles (`normal`, `destructive`, `cancel`).
+- **Native iOS Look and Feel**: Uses `UIAlertController` for authentic iOS
+  alerts and action sheets.
+- **Adaptive Fallbacks**: Provides Material `AlertDialog` and `ModalBottomSheet`
+  widgets for non-iOS platforms.
+- **Customizable Actions**: Define actions with different styles (`normal`,
+  `destructive`, `cancel`).
 - **Simple API**: Easy-to-use functions for common dialog patterns.
 - **Type-Safe**: Prevents common errors, like adding multiple cancel buttons.
 
 ## Platform Support
 
-| Platform | Implementation                                            |
-|----------|-----------------------------------------------------------|
-| **iOS**  | **Native `UIAlertController`**                            |
-| Others   | Flutter's built-in `AlertDialog` / `ModalBottomSheet`     |
+| Platform | Implementation                                   |
+| -------- | ------------------------------------------------ |
+| **iOS**  | **Native `UIAlertController`**                   |
+| Others   | `material_ui` `AlertDialog` / `ModalBottomSheet` |
+
+## Compatibility
+
+The fallback widgets use `material_ui` and `cupertino_ui`. Apps should use the
+standalone UI packages for their themes and localization delegates; the legacy
+Flutter SDK Material and Cupertino types are distinct. Requires Flutter 3.44 or
+newer and Dart 3.12 or newer.
 
 ## Getting Started
 
@@ -40,7 +54,9 @@ import 'package:adaptive_alert/adaptive_alert.dart';
 
 ### Defining Actions
 
-Actions are defined using the `AdaptiveAlertAction` class. Each action has a `title`, an optional `onPressed` callback, and a `type` (`AdaptiveAlertActionType`).
+Actions are defined using the `AdaptiveAlertAction` class. Each action has a
+`title`, an optional `onPressed` callback, and a `type`
+(`AdaptiveAlertActionType`).
 
 ```dart
 // A standard action
@@ -66,7 +82,8 @@ final cancelAction = AdaptiveAlertAction(
 
 ### Showing an Alert Dialog
 
-Use `showAdaptiveAlertDialog` to display a standard alert with one or two actions.
+Use `showAdaptiveAlertDialog` to display a standard alert with one or two
+actions.
 
 ```dart
 showAdaptiveAlertDialog(
@@ -80,7 +97,8 @@ showAdaptiveAlertDialog(
 
 ### Showing a Confirmation Dialog
 
-Use `showAdaptiveConfirmDialog` for critical actions. On iOS, this renders as an action sheet.
+Use `showAdaptiveConfirmDialog` for critical actions. On iOS, this renders as an
+action sheet.
 
 ```dart
 showAdaptiveConfirmDialog(
@@ -113,12 +131,15 @@ showAdaptiveActionSheet(
 ## API Reference
 
 - `showAdaptiveAlertDialog`: Displays a standard alert dialog.
-- `showAdaptiveConfirmDialog`: Displays a confirmation dialog (or action sheet on iOS).
+- `showAdaptiveConfirmDialog`: Displays a confirmation dialog (or action sheet
+  on iOS).
 - `showAdaptiveActionSheet`: Displays an action sheet with a list of options.
-- `AdaptiveAlertAction`: A class to define an action for an alert or action sheet.
-- `AdaptiveAlertActionType`: An enum for action styles (`normal`, `destructive`, `cancel`).
+- `AdaptiveAlertAction`: A class to define an action for an alert or action
+  sheet.
+- `AdaptiveAlertActionType`: An enum for action styles (`normal`, `destructive`,
+  `cancel`).
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request on GitHub.
-
+Contributions are welcome! Please open an issue or submit a pull request on
+GitHub.

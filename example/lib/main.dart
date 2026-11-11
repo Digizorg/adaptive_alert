@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:adaptive_alert/adaptive_alert.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   runApp(const MyApp());

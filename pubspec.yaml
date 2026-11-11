@@ -5,12 +5,14 @@ homepage: https://digizorg.app/
 publish_to: https://dart.cloudsmith.io/digizorg/default/
 
 environment:
-  sdk: ^3.11.0
-  flutter: '>=3.41.0'
+  sdk: ^3.12.0
+  flutter: '>=3.44.0'
 
 dependencies:
+  cupertino_ui: ^1.0.0
   flutter:
     sdk: flutter
+  material_ui: ^1.0.0
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
